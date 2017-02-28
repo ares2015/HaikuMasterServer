@@ -12,6 +12,8 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by oled on 2/28/2017.
@@ -20,8 +22,10 @@ import java.io.IOException;
 @EnableAutoConfiguration
 public class HaikuMaster {
 
+    private static Map<String, String> map = new HashMap<>();
+
     @RequestMapping(path = "/generateHaiku", method = RequestMethod.GET, produces = {MediaType.TEXT_PLAIN_VALUE})
-    String process(@RequestParam(value="seedWord") String seedWord) {
+    String process(@RequestParam(value = "seedWord") String seedWord) {
         BufferedReader br = null;
         int lineNumber = 0;
         try {
@@ -45,10 +49,16 @@ public class HaikuMaster {
                 e.printStackTrace();
             }
         }
+        System.out.println("Model contains foo: " + map.get("foo"));
         return "Seed word is: " + seedWord;
     }
 
     public static void main(String[] args) throws Exception {
+        init();
         SpringApplication.run(HaikuMaster.class, args);
+    }
+
+    private static void init() {
+        map.put("foo", "bar");
     }
 }
