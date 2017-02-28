@@ -7,12 +7,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import tokenizer.Tokenizer;
+import tokenizer.TokenizerImpl;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -23,6 +26,12 @@ import java.util.Map;
 public class HaikuMaster {
 
     private static Map<String, String> map = new HashMap<>();
+
+    private Tokenizer tokenizer;
+
+    public HaikuMaster() {
+        this.tokenizer = new TokenizerImpl();
+    }
 
     @RequestMapping(path = "/generateHaiku", method = RequestMethod.GET, produces = {MediaType.TEXT_PLAIN_VALUE})
     String process(@RequestParam(value = "seedWord") String seedWord) {
@@ -49,6 +58,8 @@ public class HaikuMaster {
                 e.printStackTrace();
             }
         }
+        List<String> tokens = tokenizer.getTokens("this is test");
+        System.out.println(tokens.get(0));
         System.out.println("Model contains foo: " + map.get("foo"));
         return "Seed word is: " + seedWord;
     }
