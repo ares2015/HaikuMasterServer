@@ -4,6 +4,7 @@ package composer;
 
 import data.Word2VecTokenTagData;
 import tokenizer.Tokenizer;
+import tokenizer.TokenizerImpl;
 
 import java.util.List;
 import java.util.Random;
@@ -17,9 +18,8 @@ public class HaikuSentenceCreatorImpl implements HaikuSentenceCreator {
 
     private Random randomGenerator;
 
-
-    public HaikuSentenceCreatorImpl(Tokenizer tokenizer) {
-        this.tokenizer = tokenizer;
+    public HaikuSentenceCreatorImpl() {
+        this.tokenizer = new TokenizerImpl();
         randomGenerator = new Random();
     }
 
