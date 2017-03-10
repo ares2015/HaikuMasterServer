@@ -46,10 +46,17 @@ public class HaikuComposerImpl implements HaikuComposer {
     public String compose(String seedWord) {
         StringBuilder stringBuilder = new StringBuilder();
         List<String> word2VecDataForToken = word2VecModel.get(seedWord);
+        String[] seedWords = seedWord.split("#");
+        for (String word : seedWords) {
+            if (tokenTagDataModel.get(word).contains("N")) {
+                seedWord = word;
+                break;
+            }
+        }
         if (word2VecDataForToken != null) {
             Word2VecTokenTagData word2VecTokenTagData = word2VecTokenTagDataFactory.create(seedWord, word2VecDataForToken, tokenTagDataModel);
 //        String haikuPattern = haikuPatterns.get(0);
-            String haikuPattern = "@A N V @the V N ; on the N @a N V and V . @";
+            String haikuPattern = "@N V @the V N ; on the N @ AJ N V  . @";
             String[] haikuPatternSentences = haikuPattern.split("@");
             int haikuIndex = 0;
             for (String haikuPatternSentence : haikuPatternSentences) {
