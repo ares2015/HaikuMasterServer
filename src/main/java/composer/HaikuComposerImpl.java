@@ -48,7 +48,7 @@ public class HaikuComposerImpl implements HaikuComposer {
         List<String> word2VecDataForToken = word2VecModel.get(seedWord);
         String[] seedWords = seedWord.split("#");
         for (String word : seedWords) {
-            if (tokenTagDataModel.get(word).contains("N")) {
+            if (tokenTagDataModel.containsKey(word) && tokenTagDataModel.get(word).contains("N")) {
                 seedWord = word;
                 break;
             }
