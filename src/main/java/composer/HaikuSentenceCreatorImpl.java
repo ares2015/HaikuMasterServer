@@ -1,7 +1,6 @@
 package composer;
 
 
-
 import data.Word2VecTokenTagData;
 import tokenizer.Tokenizer;
 import tokenizer.TokenizerImpl;
@@ -27,9 +26,10 @@ public class HaikuSentenceCreatorImpl implements HaikuSentenceCreator {
     public String create(String haikuSentencePattern, Word2VecTokenTagData word2VecTokenTagData, boolean isFirstSentence) {
         StringBuilder stringBuilder = new StringBuilder();
         List<String> tokens = tokenizer.getTokens(haikuSentencePattern);
+        int tokenIndex = 0;
         for (String token : tokens) {
             if ("N".equals(token)) {
-                if (isFirstSentence) {
+                if (isFirstSentence && tokenIndex == 0) {
                     stringBuilder.append(word2VecTokenTagData.getToken());
                 } else {
                     String noun = getRandomWord(word2VecTokenTagData.getNouns());
@@ -52,6 +52,7 @@ public class HaikuSentenceCreatorImpl implements HaikuSentenceCreator {
                 stringBuilder.append(token);
                 stringBuilder.append(" ");
             }
+            tokenIndex++;
         }
         return stringBuilder.toString();
     }
