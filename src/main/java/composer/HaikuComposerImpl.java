@@ -62,10 +62,13 @@ public class HaikuComposerImpl implements HaikuComposer {
         int haikuIndex = 0;
         for (String haikuPatternSentence : haikuPatternSentences) {
             if (haikuIndex == 0 || haikuIndex == 2) {
-                seedWord = nounsList.get(0);
+                if (word2VecModel.containsKey(nounsList.get(0))) {
+                    seedWord = nounsList.get(0);
+                } else {
+                    seedWord = getRandomWord(nounsList);
+                }
             } else if (haikuIndex == 1 && nounsList.size() > 1) {
-                int index = randomGenerator.nextInt(nounsList.size());
-                seedWord = nounsList.get(index);
+                seedWord = getRandomWord(nounsList);
             }
             List<String> word2VecDataForToken = word2VecModel.get(seedWord);
             Word2VecTokenTagData word2VecTokenTagData = word2VecTokenTagDataFactory.create(seedWord, word2VecDataForToken, tokenTagDataModel);
@@ -73,8 +76,6 @@ public class HaikuComposerImpl implements HaikuComposer {
                 String haikuSentence = haikuSentenceCreator.create(haikuPatternSentence, word2VecTokenTagData, haikuIndex == 0);
                 stringBuilder.append(haikuSentence);
                 stringBuilder.append(System.getProperty("line.separator"));
-
-//                stringBuilder.append("\n");
                 haikuIndex++;
             }
         }
@@ -86,5 +87,9 @@ public class HaikuComposerImpl implements HaikuComposer {
 
     }
 
+    private String getRandomWord(List<String> nounsList) {
+        int index = randomGenerator.nextInt(nounsList.size());
+        return nounsList.get(index);
+    }
 
 }
