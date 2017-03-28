@@ -4,6 +4,7 @@ package composer;
 import data.Word2VecTokenTagData;
 import factory.Word2VecTokenTagDataFactory;
 import factory.Word2VecTokenTagDataFactoryImpl;
+import org.springframework.core.io.ResourceLoader;
 import reader.*;
 
 import java.io.IOException;
@@ -32,10 +33,11 @@ public class HaikuComposerImpl implements HaikuComposer {
 
     private Random randomGenerator;
 
-    public HaikuComposerImpl() throws IOException {
-        this.tokenTagDataModelReader = new TokenTagDataModelReaderImpl();
-        this.word2VecModelReader = new Word2VecModelReaderImpl();
-        this.haikuPatternsReader = new HaikuPatternsReaderImpl();
+
+    public HaikuComposerImpl(ResourceLoader resourceLoader) throws IOException {
+        this.tokenTagDataModelReader = new TokenTagDataModelReaderImpl(resourceLoader);
+        this.word2VecModelReader = new Word2VecModelReaderImpl(resourceLoader);
+        this.haikuPatternsReader = new HaikuPatternsReaderImpl(resourceLoader);
         this.word2VecTokenTagDataFactory = new Word2VecTokenTagDataFactoryImpl();
         this.haikuSentenceCreator = new HaikuSentenceCreatorImpl();
         tokenTagDataModel = tokenTagDataModelReader.read();

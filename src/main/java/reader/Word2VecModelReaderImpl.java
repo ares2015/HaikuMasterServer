@@ -1,6 +1,10 @@
 package reader;
 
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
+
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -13,12 +17,20 @@ import java.util.Map;
  */
 public class Word2VecModelReaderImpl implements Word2VecModelReader {
 
-    private String inputFilePath = "C:\\Users\\Oliver\\Documents\\NlpTrainingData\\HaikuMasterTrainingData\\HaikuMasterSortedWord2VecData.txt";
+//    private String inputFilePath = "C:\\Users\\Oliver\\Documents\\NlpTrainingData\\HaikuMasterTrainingData\\HaikuMasterSortedWord2VecData.txt";
+
+    private ResourceLoader resourceLoader;
+
+    public Word2VecModelReaderImpl(ResourceLoader resourceLoader) {
+        this.resourceLoader = resourceLoader;
+    }
 
     @Override
     public Map<String, List<String>> read() throws IOException {
         Map<String, List<String>> word2VecModel = new HashMap<String, List<String>>();
-        BufferedReader br = new BufferedReader(new FileReader(inputFilePath));
+        Resource resource = resourceLoader.getResource("classpath:HaikuMasterSortedWord2VecData.txt");
+        File file = resource.getFile();
+        BufferedReader br = new BufferedReader(new FileReader(file));
         String trainingDataRowAsString = br.readLine();
         while (trainingDataRowAsString != null) {
             System.out.println("Reading: " + trainingDataRowAsString);

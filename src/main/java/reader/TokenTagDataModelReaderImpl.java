@@ -1,6 +1,10 @@
 package reader;
 
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
+
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
@@ -13,12 +17,20 @@ import java.util.Set;
  */
 public class TokenTagDataModelReaderImpl implements TokenTagDataModelReader {
 
-    private String inputFilePath = "C:\\Users\\Oliver\\Documents\\NlpTrainingData\\HaikuMasterTrainingData\\HaikuMasterMergedTokenTagData.txt";
+//    private String inputFilePath = "C:\\Users\\Oliver\\Documents\\NlpTrainingData\\HaikuMasterTrainingData\\HaikuMasterMergedTokenTagData.txt";
+
+    private ResourceLoader resourceLoader;
+
+    public TokenTagDataModelReaderImpl(ResourceLoader resourceLoader) {
+        this.resourceLoader = resourceLoader;
+    }
 
     @Override
     public Map<String, Set<String>> read() throws IOException {
         Map<String, Set<String>> tokenTagDataModel = new HashMap<String, Set<String>>();
-        BufferedReader br = new BufferedReader(new FileReader(inputFilePath));
+        Resource resource = resourceLoader.getResource("classpath:HaikuMasterMergedTokenTagData.txt");
+        File file = resource.getFile();
+        BufferedReader br = new BufferedReader(new FileReader(file));
         String trainingDataRowAsString = br.readLine();
         while (trainingDataRowAsString != null) {
             System.out.println("Reading: " + trainingDataRowAsString);
